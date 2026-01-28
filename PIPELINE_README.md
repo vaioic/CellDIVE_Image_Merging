@@ -133,6 +133,8 @@ optional arguments:
   -h, --help            show this help message and exit
   --output OUTPUT, -o OUTPUT
                         Output directory for Zarr files (default: input_directory/zarr_output)
+  --prefix PREFIX, -p PREFIX
+                        Prefix to add to folder name (e.g., {prefix}_R000.zarr; default: Region names, e.g., R000.zarr R001.zarr)
   --regions REGIONS [REGIONS ...], -r REGIONS [REGIONS ...]
                         Specific region IDs to process (e.g., R000 R001)
   --pyramid-levels PYRAMID_LEVELS, -p PYRAMID_LEVELS
@@ -227,6 +229,7 @@ The pipeline automatically assigns **color blind-friendly colors** to channels b
 | FITC | Bright Green | `#00FF00` | Classic fluorophore |
 
 **Benefits:**
+
 - ✅ High contrast between channels
 - ✅ Distinguishable for deuteranopia (red-green color blindness)
 - ✅ Distinguishable for protanopia (red color blindness)
@@ -253,6 +256,7 @@ python pipeline.py /path/to/images --magnification 0
 ```
 
 The magnification is displayed during processing:
+
 ```
 Magnification:    20.0X (default: 20.0X)
 ```
@@ -275,11 +279,13 @@ The pipeline preserves the following metadata from source OME-TIFF files:
 ### Issue: No files found
 
 **Error:**
+
 ```
 Error: No OME-TIFF files found matching the naming convention
 ```
 
 **Solution:**
+
 - Verify files contain `R###`, `FINAL`, and end with `.ome.tif`
 - Check that files are in the specified directory
 - Use `--verbose` to see what's being searched
@@ -287,6 +293,7 @@ Error: No OME-TIFF files found matching the naming convention
 ### Issue: xmlns:schemaLocation error
 
 **Error:**
+
 ```
 XMLSyntaxError: xmlns:schemaLocation is not a valid URI
 ```
@@ -297,11 +304,13 @@ The pipeline automatically handles this error by fixing schema issues in the sou
 ### Issue: Channel count mismatch
 
 **Error:**
+
 ```
 Error: File count (4) doesn't match channel count (3)
 ```
 
 **Solution:**
+
 - Ensure all channels for a region have matching files
 - Check filename patterns match the expected convention
 - Verify all files contain the `FINAL` keyword
@@ -309,11 +318,13 @@ Error: File count (4) doesn't match channel count (3)
 ### Issue: Memory errors
 
 **Error:**
+
 ```
 MemoryError: Unable to allocate array
 ```
 
 **Solution:**
+
 - Process regions one at a time using `--regions R000`
 - Reduce workers: `--workers 2`
 - Reduce `--pyramid-levels` to fewer levels
@@ -324,6 +335,7 @@ MemoryError: Unable to allocate array
 ### Issue: Slow processing
 
 **Solution:**
+
 - Increase workers: `--workers 16`
 - Reduce compression: `--compression-level 1` or `--compression none`
 - Use faster compression: `--compression lz4`
@@ -332,11 +344,13 @@ MemoryError: Unable to allocate array
 ### Issue: Import errors
 
 **Error:**
+
 ```
 ImportError: No module named 'bioio'
 ```
 
 **Solution:**
+
 ```bash
 pip install bioio bioio-ome-zarr bioio-ome-tiff ome-types tifffile
 ```
@@ -476,6 +490,7 @@ process_region(
 ## Support
 
 For issues, questions, or feature requests, please refer to:
+
 - **Project Documentation**: See [PROJECT_SUMMARY.md](Claude_Code_Reference_Docs/PROJECT_SUMMARY.md)
 - **Metadata Guide**: See [OME_METADATA_GUIDE.md](Claude_Code_Reference_Docs/OME_METADATA_GUIDE.md)
 

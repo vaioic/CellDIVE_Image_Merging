@@ -210,12 +210,12 @@ def merge_ome_metadata_from_files(
         parts = channel_name.split('_')
         if len(parts) == 2:
             # DAPI format: round_channel
-            display_name = parts[1]  # "DAPI"
+            display_name = channel_name  # "1.0.4_DAPI"
         elif len(parts) >= 3:
             # Marker format: round_channel_marker
             channel = parts[1]
             marker = '_'.join(parts[2:])
-            display_name = f"{channel}_{marker}"
+            display_name = f"{parts[0]}_{marker}_{channel}" # "1.0.4_CD45_Cy5"
         else:
             display_name = channel_name
 

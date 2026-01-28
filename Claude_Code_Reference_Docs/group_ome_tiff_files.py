@@ -179,8 +179,8 @@ def extract_channel_marker_info(
     # Format: prefix_date_sample_round_region_DAPI_FINAL_F.ome.tif
     dapi_pattern = re.compile(
         r'^.+?_'                    # prefix
-        r'\d{8}_'                   # date (mmddyyyy)
-        r'S\d{1,2}_'                # sample (S1-S15)
+    #    r'\d{8}_'                   # date (mmddyyyy)
+    #    r'S\d{1,2}_'                # sample (S1-S15)
         r'(\d{1,2}\.\d+\.\d+)_'     # round (captured) - e.g., 1.0.4
         r'(R\d{3})_'                # region (captured)
         r'DAPI_'                    # DAPI channel
@@ -193,8 +193,8 @@ def extract_channel_marker_info(
     # Format: prefix_date_sample_round_region_channel_marker_FINAL_AFR_F.ome.tif
     channel_marker_pattern = re.compile(
         r'^.+?_'                    # prefix
-        r'\d{8}_'                   # date (mmddyyyy)
-        r'S\d{1,2}_'                # sample (S1-S15)
+    #    r'\d{8}_'                   # date (mmddyyyy)
+    #    r'S\d{1,2}_'                # sample (S1-S15)
         r'(\d{1,2}\.\d+\.\d+)_'     # round (captured) - e.g., 1.0.4
         r'(R\d{3})_'                # region (captured)
         r'(Cy3|Cy5|FITC|Cy7)_'      # channel (captured)

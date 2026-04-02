@@ -1,6 +1,4 @@
-# New Features Added to CellDIVE Pipeline
-
-## Summary
+# Features of CellDIVE Pipeline
 
 Two major features have been added to enhance the pipeline's output and usability:
 
@@ -11,16 +9,15 @@ Two major features have been added to enhance the pipeline's output and usabilit
 
 ## 1. Color Blind-Friendly Channel Colors
 
-### Overview
-
 The pipeline now automatically assigns scientifically validated, color blind-friendly colors to all channels. These colors are based on:
+
 - **Paul Tol's color schemes** (color blind safe palettes)
 - **IBM's Design Color Blind Safe Palette**
 
 ### Color Assignments
 
 | Channel Type | Color Name | Hex Code | Visual |
-|--------------|------------|----------|--------|
+| -------------- | ------------ | ---------- | -------- |
 | DAPI | White | `#FFFFFF` | ⚪ |
 | Cy3 | Vibrant Orange | `#FFB000` | 🟠 |
 | Cy5 | Magenta/Pink | `#DC267F` | 🟣 |
@@ -69,8 +66,6 @@ COLORBLIND_FRIENDLY_COLORS = {
 
 ## 2. Magnification Metadata
 
-### Overview
-
 The pipeline now includes objective magnification in the OME-XML metadata files, making it easier to track imaging parameters and scale measurements in QuPath.
 
 ### Default Value
@@ -80,16 +75,19 @@ The pipeline now includes objective magnification in the OME-XML metadata files,
 ### Usage
 
 #### Use Default (20X)
+
 ```bash
 python pipeline.py /path/to/images
 ```
 
 Output:
-```
+
+```rtf
 Magnification:    20.0X (default: 20.0X)
 ```
 
 #### Custom Magnification
+
 ```bash
 # 40X objective
 python pipeline.py /path/to/images --magnification 40
@@ -99,17 +97,19 @@ python pipeline.py /path/to/images --magnification 10
 ```
 
 #### Omit Magnification
+
 ```bash
 # Set to 0 to exclude magnification metadata
 python pipeline.py /path/to/images --magnification 0
 ```
 
 Output:
-```
+
+```rtf
 Magnification:    Not included in metadata
 ```
 
-### Implementation
+### Example
 
 Magnification is added to the OME-XML structure:
 
@@ -136,13 +136,16 @@ Magnification is added to the OME-XML structure:
 ## Modified Files
 
 ### 1. ome_metadata_enhanced.py
+
 **New:**
+
 - `COLORBLIND_FRIENDLY_COLORS` dictionary
 - `assign_channel_color()` function
 - `magnification` parameter in all functions
 - Objective/ObjectiveSettings creation in OME metadata
 
 **Key Changes:**
+
 ```python
 def merge_ome_metadata_from_files(
     tiff_files: List[Union[str, Path]],
@@ -164,13 +167,16 @@ def merge_ome_metadata_from_files(
 ```
 
 ### 2. pipeline.py
+
 **New:**
+
 - `assign_channel_color` import
 - `--magnification` / `-m` command-line argument
 - Magnification display in output
 - Color assignment in Zarr writer
 
 **Key Changes:**
+
 ```python
 # Parse arguments
 parser.add_argument(
@@ -197,7 +203,9 @@ create_metadata_for_merged_zarr(
 ```
 
 ### 3. PIPELINE_README.md
+
 **Updated sections:**
+
 - Overview - mentions color blind-friendly colors
 - Command-line options - includes `--magnification`
 - New section: "Channel Color Assignments"
@@ -216,7 +224,8 @@ python pipeline.py /path/to/images
 ```
 
 Output:
-```
+
+```rtf
 ======================================================================
 CellDIVE OME-TIFF to OME-Zarr Pipeline
 ======================================================================
@@ -238,6 +247,7 @@ Processing R000...
 ```
 
 Channels will display in QuPath with:
+
 - DAPI: White
 - Cy3_iba1: Orange
 - Cy5_Neun: Magenta
@@ -250,7 +260,8 @@ python pipeline.py /path/to/images --magnification 40
 ```
 
 Output shows:
-```
+
+```rtf
 Magnification:    40.0X (default: 20.0X)
 ```
 
@@ -279,6 +290,7 @@ python pipeline.py /path/to/images \
 ### Default Color Fallback
 
 If a channel doesn't match known fluorophores, colors are assigned cyclically from this palette:
+
 ```python
 'default': [
     'FFB000',  # Orange
@@ -295,6 +307,7 @@ If a channel doesn't match known fluorophores, colors are assigned cyclically fr
 ### Magnification Storage
 
 The magnification value is stored in multiple OME-XML locations:
+
 - **Objective.NominalMagnification** - The physical objective specification
 - **ObjectiveSettings** - Links the image to the objective
 
@@ -307,11 +320,13 @@ This redundancy ensures compatibility with different OME-XML readers.
 Both features can be verified:
 
 ### Verify Colors
+
 1. Open `.zarr` file in QuPath
 2. Check channel colors in the channel panel
 3. Verify high contrast between channels
 
 ### Verify Magnification
+
 1. Open `.zarr` file in QuPath
 2. View **Image → Show Image Properties**
 3. Check for magnification value (20X or custom)
@@ -322,6 +337,7 @@ Both features can be verified:
 ## Backward Compatibility
 
 ✅ **Fully backward compatible**
+
 - Existing scripts continue to work
 - Default values maintain previous behavior
 - No breaking changes to function signatures
@@ -332,6 +348,7 @@ Both features can be verified:
 ## Future Enhancements
 
 Possible future additions:
+
 - Custom color maps via configuration file
 - Per-channel magnification (for multi-objective workflows)
 - Color scheme presets (scientific publisher requirements)
@@ -342,19 +359,22 @@ Possible future additions:
 ## References
 
 **Color Blind Safe Palettes:**
-- Paul Tol's Notes: https://personal.sron.nl/~pault/
+
+- Paul Tol's Notes: <https://personal.sron.nl/~pault/>
 - IBM Design Color Blind Safe Palette
 - Wong, B. (2011). "Color blindness." Nature Methods 8(6): 441.
 
 **OME-XML Specification:**
-- OME Data Model: https://docs.openmicroscopy.org/ome-model/
-- QuPath OME-Zarr Support: https://qupath.readthedocs.io/
+
+- OME Data Model: <https://docs.openmicroscopy.org/ome-model/>
+- QuPath OME-Zarr Support: <https://qupath.readthedocs.io/>
 
 ---
 
 ## Questions?
 
 For issues or questions about these features:
+
 1. See [PIPELINE_README.md](PIPELINE_README.md) for detailed usage
 2. Check [OME_METADATA_GUIDE.md](Claude_Code_Reference_Docs/OME_METADATA_GUIDE.md) for metadata details
 3. Review example code in [pipeline.py](pipeline.py) and [ome_metadata_enhanced.py](ome_metadata_enhanced.py)
